@@ -1,0 +1,20 @@
+{
+	"name": "ls_adls",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"parameters": {
+			"storageaccount": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "@{concat('https://',linkedService().storageaccount,'.dfs.core.windows.net/')}",
+			"tenant": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+			"servicePrincipalId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+			"servicePrincipalCredentialType": "ServicePrincipalKey",
+			"encryptedCredential": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+		}
+	}
+}

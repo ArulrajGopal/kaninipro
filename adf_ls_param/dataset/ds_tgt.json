@@ -1,0 +1,31 @@
+{
+	"name": "ds_tgt",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"storageaccount": {
+					"value": "@dataset().target_storage_account",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"target_storage_account": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "sample_data.parquet",
+				"fileSystem": "output"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
