@@ -38,13 +38,9 @@
 
 ## Extract the job run from some particular timing 
 
-### find the utc time 2 hours from now (powershell script)
+      $from = [int64]((Get-Date).AddHours(-3).ToUniversalTime() - [datetime]'1970-01-01').TotalMilliseconds
 
-      [int64]((Get-Date).AddHours(-2).ToUniversalTime() - [datetime]'1970-01-01').TotalMilliseconds
-
-### run the job runs only after this time
-
-      databricks jobs list-runs --job-id <job_run_id> --start-time-from <utc_time>
+      databricks jobs list-runs --job-id 26288366538638 --start-time-from $from
 
 
 ## Capture the run along with result
