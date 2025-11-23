@@ -59,6 +59,6 @@
 
 ## check latest few job status along with run duration
 
-      powershell -ExecutionPolicy Bypass -File .\job_status.ps1 -JobId <job_id> -Hours 2
+      powershell -ExecutionPolicy Bypass -File .\job_status.ps1 -JobId <job_id> -Hours 5
 
       
