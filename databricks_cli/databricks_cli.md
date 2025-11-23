@@ -57,5 +57,8 @@
       $run.views[0].content | Out-File -FilePath .\run_log.html -Encoding utf8
       Start-Process .\run_log.html
 
+## check latest few job status along with run duration
+
+      powershell -ExecutionPolicy Bypass -File .\job_status.ps1 -JobId 26288366538638 -Hours 2
 
       
