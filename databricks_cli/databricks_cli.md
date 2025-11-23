@@ -1,8 +1,8 @@
 #list clusters
 
-  databricks clusters list
+   databricks clusters list
 
 
 #get cluster details 
 
-  databricks clus
+   databricks clus
