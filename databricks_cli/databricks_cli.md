@@ -1,5 +1,10 @@
 ### list clusters
 
+      databricks configure
+
+
+### list clusters
+
       databricks clusters list
 
 
