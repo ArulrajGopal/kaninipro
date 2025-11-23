@@ -5,4 +5,4 @@
 
 #get cluster details 
 
-   databricks clus
+      databricks clus
