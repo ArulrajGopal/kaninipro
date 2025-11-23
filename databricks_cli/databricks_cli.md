@@ -51,9 +51,8 @@
 
       databricks jobs export-run <run_id> --views-to-export ALL > run_export.json
 
-### script to convert the json into html which can be lodaed into databricks or viewed with browser itself.
-
-     powershell -ExecutionPolicy Bypass -File .\convert_json_to_html.ps1 -JsonFile "run_export.json" -HtmlFile "run_log.html"
+      powershell -ExecutionPolicy Bypass -File .\convert_json_to_html.ps1 -JsonFile "run_export.json" -HtmlFile "run_log.html"
+    
 
 ## check latest few job status along with run duration
 
