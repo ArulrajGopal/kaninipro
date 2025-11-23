@@ -3,6 +3,6 @@
       databricks clusters list
 
 
-### get cluster details 
+#### get cluster details 
 
       databricks clus
