@@ -26,3 +26,14 @@
 ### stop the cluster
 
       databricks clusters delete <cluster_id>
+
+
+### list jobs
+
+      databricks jobs list
+
+### list job runs
+
+      databricks jobs list-runs
+
+      
