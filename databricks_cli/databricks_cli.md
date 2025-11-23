@@ -55,7 +55,7 @@
 
       $run = Get-Content run_export.json -Raw | ConvertFrom-Json
       $run.views[0].content | Out-File -FilePath .\run_log.html -Encoding utf8
-      Start-Process .\task3.html
+      Start-Process .\run_log.html
 
 
       
