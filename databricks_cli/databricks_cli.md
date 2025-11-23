@@ -36,7 +36,7 @@
 
       databricks jobs list-runs
 
-## Extract the job run from some particular timing 
+## Extract the job run from some particular timing (last 3 hours) 
 
       $from = [int64]((Get-Date).AddHours(-3).ToUniversalTime() - [datetime]'1970-01-01').TotalMilliseconds
 
