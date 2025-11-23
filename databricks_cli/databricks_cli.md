@@ -53,9 +53,7 @@
 
 ### script to convert the json into html which can be lodaed into databricks or viewed with browser itself.
 
-      $run = Get-Content run_export.json -Raw | ConvertFrom-Json
-      $run.views[0].content | Out-File -FilePath .\run_log.html -Encoding utf8
-      Start-Process .\run_log.html
+     powershell -ExecutionPolicy Bypass -File .\convert_json_to_html.ps1 -JsonFile "run_export.json" -HtmlFile "run_log.html"
 
 ## check latest few job status along with run duration
 
