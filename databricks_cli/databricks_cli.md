@@ -61,4 +61,12 @@
 
       powershell -ExecutionPolicy Bypass -File .\job_status.ps1 -JobId <job_id> -Hours 5
 
+## get users list 
+
+      databricks users list
+
+## get user details
+
+      databricks users get <user_id>
+
       
