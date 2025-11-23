@@ -38,10 +38,14 @@
 
 ## extract the job run from some particular timing (last 3 hours) 
 
-      $from = [int64]((Get-Date).AddHours(-3).ToUniversalTime() - [datetime]'1970-01-01').TotalMilliseconds
+      $start_time = [int64](
+                  (Get-Date).AddHours(-4).ToUniversalTime() - [datetime]'1970-01-01'
+                   ).TotalMilliseconds
 
-      databricks jobs list-runs --job-id <job_id> --start-time-from $from
 
+      databricks jobs list-runs `
+                --job-id <job_id> `
+                --start-time-from $start_time
 
 ## capture the run along with result
 
