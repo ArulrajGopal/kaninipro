@@ -16,3 +16,13 @@
 ### get cluster details 
 
       databricks clusters get <cluster_id>
+      
+
+### start the cluster
+
+      databricks clusters start <cluster_id>
+      
+
+### get cluster details 
+
+      databricks clusters delete <cluster_id>
