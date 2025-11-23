@@ -40,7 +40,7 @@
 
       $from = [int64]((Get-Date).AddHours(-3).ToUniversalTime() - [datetime]'1970-01-01').TotalMilliseconds
 
-      databricks jobs list-runs --job-id 26288366538638 --start-time-from $from
+      databricks jobs list-runs --job-id <job_id> --start-time-from $from
 
 
 ## Capture the run along with result
