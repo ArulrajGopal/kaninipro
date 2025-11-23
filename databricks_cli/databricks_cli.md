@@ -23,6 +23,6 @@
       databricks clusters start <cluster_id>
       
 
-### get cluster details 
+### stop the cluster
 
       databricks clusters delete <cluster_id>
