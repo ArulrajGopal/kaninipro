@@ -38,16 +38,24 @@
 
 ## Extract the job run from some particular timing 
 
-## find the utc time 2 hours from now (powershell script)
+### find the utc time 2 hours from now (powershell script)
 
       [int64]((Get-Date).AddHours(-2).ToUniversalTime() - [datetime]'1970-01-01').TotalMilliseconds
 
-## run the job runs only after this time
+### run the job runs only after this time
 
       databricks jobs list-runs --job-id <job_run_id> --start-time-from <utc_time>
 
 
+## Capture the run along with result
 
+      databricks jobs export-run <run_id> --views-to-export ALL > run_export.json
+
+### script to convert the json into html which can be lodaed into databricks or viewed with browser itself.
+
+      $run = Get-Content run_export.json -Raw | ConvertFrom-Json
+      $run.views[0].content | Out-File -FilePath .\run_log.html -Encoding utf8
+      Start-Process .\task3.html
 
 
       
