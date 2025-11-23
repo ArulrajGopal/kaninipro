@@ -40,7 +40,7 @@
 
 ## find the utc time 2 hours from now (powershell script)
 
-      [int64]((Get-Date).AddHours(-5).ToUniversalTime() - [datetime]'1970-01-01').TotalMilliseconds
+      [int64]((Get-Date).AddHours(-2).ToUniversalTime() - [datetime]'1970-01-01').TotalMilliseconds
 
 ## run the job runs only after this time
 
