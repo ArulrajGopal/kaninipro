@@ -1,6 +1,11 @@
-### list clusters
+### configure
 
       databricks configure
+
+
+### confirming profiles
+
+      databricks auth profiles
 
 
 ### list clusters
@@ -10,4 +15,4 @@
 
 ### get cluster details 
 
-      databricks clus
+      databricks clusters get <cluster_id>
