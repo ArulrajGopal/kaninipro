@@ -12,25 +12,23 @@
 
     databricks secrets put-secret myscope adls_key --string-value <your_access_key>
 
-# databricks bundle initialize
+# databricks bundle initialize & validate
 
     databricks bundle init
     
     databricks bundle validate
 
 
+# databricks bundle deploy
+
+    databricks bundle deploy
+
+    databricks bundle deploy --profile <profile_name> --target <env_target>
 
 
+# databricks bundle destory
 
-databricks bundle deploy
+    databricks bundle destroy
 
-databricks bundle deploy --profile profile2 --target test
+    databricks bundle destroy --profile <profile_name> --target <env_target>
 
-databricks bundle deploy --profile profile3 --target prod
-
-
-databricks bundle destroy
-
-databricks bundle destroy --profile profile2 --target test
-
-databricks bundle destroy --profile profile3 --target prod
