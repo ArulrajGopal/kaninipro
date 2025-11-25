@@ -26,7 +26,7 @@
     databricks bundle deploy --profile <profile_name> --target <env_target>
 
 
-# databricks bundle destory
+# databricks bundle destroy
 
     databricks bundle destroy
 
