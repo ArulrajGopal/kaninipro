@@ -1,0 +1,26 @@
+{
+    "dev":{
+       "storage_account": "kaniniproadlsdev",
+       "employee_department_path":"abfss://source@kaniniproadlsdev.dfs.core.windows.net/employee_department.csv",
+       "employee_department_target":"abfss://target@kaniniproadlsdev.dfs.core.windows.net/employee_depart",
+       "employee_salary_path":"abfss://source@kaniniproadlsdev.dfs.core.windows.net/employee_salary.csv",
+       "employee_salary_target":"abfss://target@kaniniproadlsdev.dfs.core.windows.net/employee_salary",
+       "final_aggregated_path":"abfss://target@kaniniproadlsdev.dfs.core.windows.net/agg_path"
+    },
+    "test" :{
+       "storage_account": "kaniniproadlstest",
+       "employee_department_path":"abfss://source@kaniniproadlstest.dfs.core.windows.net/employee_department.csv",
+       "employee_department_target":"abfss://target@kaniniproadlstest.dfs.core.windows.net/employee_depart",
+       "employee_salary_path":"abfss://source@kaniniproadlstest.dfs.core.windows.net/employee_salary.csv",
+       "employee_salary_target":"abfss://target@kaniniproadlstest.dfs.core.windows.net/employee_salary",
+       "final_aggregated_path":"abfss://target@kaniniproadlstest.dfs.core.windows.net/agg_path"
+    },
+    "prod":{
+       "storage_account": "kaniniproadlsprod",
+       "employee_department_path":"abfss://source@kaniniproadlsprod.dfs.core.windows.net/employee_department.csv",
+       "employee_department_target":"abfss://target@kaniniproadlsprod.dfs.core.windows.net/employee_depart",
+       "employee_salary_path":"abfss://source@kaniniproadlsprod.dfs.core.windows.net/employee_salary.csv",
+       "employee_salary_target":"abfss://target@kaniniproadlsprod.dfs.core.windows.net/employee_salary",
+       "final_aggregated_path":"abfss://target@kaniniproadlsprod.dfs.core.windows.net/agg_path"
+    }
+}

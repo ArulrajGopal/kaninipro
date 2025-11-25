@@ -1,0 +1,43 @@
+resources:
+  jobs:
+    job1:
+      name: job1
+      parameters:
+        - name: env
+          default: ${var.env}
+      tasks:
+        - task_key: task_1
+          notebook_task:
+            notebook_path: ../src/trans/task1.py
+            source: WORKSPACE
+          job_cluster_key: Job_cluster
+        - task_key: task_2
+          notebook_task:
+            notebook_path: ../src/trans/task2.scala
+            source: WORKSPACE
+          job_cluster_key: Job_cluster
+        - task_key: task_3
+          depends_on:
+            - task_key: task_1
+            - task_key: task_2
+          notebook_task:
+            notebook_path: ../src/trans/task3.py
+            source: WORKSPACE
+          job_cluster_key: Job_cluster
+      job_clusters:
+        - job_cluster_key: Job_cluster
+          new_cluster:
+            spark_version: 15.4.x-scala2.12
+            azure_attributes:
+              first_on_demand: 1
+              spot_bid_max_price: -1
+            node_type_id: Standard_F4
+            spark_env_vars:
+              PYSPARK_PYTHON: /databricks/python3/bin/python3
+            enable_elastic_disk: true
+            data_security_mode: LEGACY_SINGLE_USER_STANDARD
+            runtime_engine: STANDARD
+            kind: CLASSIC_PREVIEW
+            is_single_node: true
+      queue:
+        enabled: true
