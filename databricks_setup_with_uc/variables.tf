@@ -39,7 +39,7 @@ variable "environment" {
 variable "storage_account_name" {
   type        = string
   description = "Name of the storage account (must be globally unique, lowercase, 3-24 characters)"
-  default     = "kaniniprostorageaccountdev"
+  default     = "kaniniprostoracctdev"
 }
 
 variable "storage_container_name" {
