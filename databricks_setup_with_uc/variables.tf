@@ -27,7 +27,7 @@ variable "location" {
 variable "resource_group_name" {
   type        = string
   description = "Name of the resource group"
-  default     = "rg-databricks"
+  default     = "kaninipro-dbx-rg-dev"
 }
 
 variable "environment" {
@@ -45,19 +45,19 @@ variable "storage_account_name" {
 variable "storage_container_name" {
   type        = string
   description = "Name of the storage container"
-  default     = "databricks-container"
+  default     = "data"
 }
 
 variable "access_connector_name" {
   type        = string
   description = "Name of the Databricks access connector"
-  default     = "databricks-connector"
+  default     = "kaninipro-dbx-access-connector-dev"
 }
 
 variable "workspace_name" {
   type        = string
   description = "Name of the Databricks workspace"
-  default     = "databricks-workspace"
+  default     = "kaninipro-dbx-workspace-dev"
 }
 
 variable "databricks_sku" {
