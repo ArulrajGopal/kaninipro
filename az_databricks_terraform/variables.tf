@@ -105,14 +105,3 @@ variable "tags" {
   }
 }
 
-variable "user_email" {
-  type        = list(string)
-  description = "List of email addresses of users to add to Databricks workspace with user access"
-  default     = ["arulrajgopal_outlook.com#EXT#@arulrajgopaloutlook.onmicrosoft.com","user-1@arulrajgopaloutlook.onmicrosoft.com"]
-}
-
-variable "admin_user_email" {
-  type        = list(string)
-  description = "List of email addresses of users to add to Databricks workspace with admin access"
-  default     = ["user-2@arulrajgopaloutlook.onmicrosoft.com"]
-}
