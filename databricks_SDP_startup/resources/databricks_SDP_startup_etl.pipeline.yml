@@ -1,0 +1,15 @@
+# The main pipeline for databricks_SDP_startup
+
+resources:
+  pipelines:
+    databricks_SDP_startup_etl:
+      name: databricks_SDP_startup_etl
+      catalog: ${var.catalog}
+      schema: ${var.schema}
+      serverless: true
+      root_path: "../src/databricks_SDP_startup_etl"
+
+      libraries:
+        - glob:
+            include: ../src/databricks_SDP_startup_etl/transformations/**
+
