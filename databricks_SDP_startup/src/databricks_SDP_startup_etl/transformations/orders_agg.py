@@ -1,5 +1,6 @@
 from pyspark import pipelines as dp
-from pyspark.sql.functions import count, current_timestamp
+from pyspark.sql.functions import current_timestamp, row_number, col
+from pyspark.sql.window import Window
 from pyspark.sql.types import *
 
 path_prefix = "abfss://raw@kaniniprodltdemo.dfs.core.windows.net/"
@@ -124,15 +125,18 @@ def orders_agg():
     order_value_agg = spark.sql("""
     select 
     customer_name,
+    customer_id,
     TO_CHAR(order_date, 'yyyy-MM') as year_month,
     sum(total_order_value) as total_order_value_sum
     from kaninipro_catalog.demo.joined_silver
-    group by year_month, customer_name
+    group by year_month, customer_name, customer_id
     """)
 
-    timestamp_added_df = order_value_agg.withColumn( "__insert_date", current_timestamp())
+    window_spec = Window.partitionBy("year_month").orderBy(order_value_agg["total_order_value_sum"].desc())
+    order_value_agg = order_value_agg.withColumn("rank", row_number().over(window_spec)).filter(col("rank") == 1).drop("rank")
+
+    filtered_df = order_value_agg.filter(col("rank") == 1).drop("rank")
+
+    timestamp_added_df = filtered_df.withColumn( "__insert_date", current_timestamp())
 
     return timestamp_added_df
-
-
-
