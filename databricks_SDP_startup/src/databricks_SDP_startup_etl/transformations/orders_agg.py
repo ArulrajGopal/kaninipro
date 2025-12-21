@@ -43,7 +43,7 @@ product_schema = StructType([
 )
 def products_bronze():
     df = spark.readStream.format("csv").schema(product_schema).option("header", "true")\
-                .load(f"{path_prefix}/products/")
+                .load(f"{path_prefix}/product/")
     timestamp_added_df = df.withColumn( "__insert_date", current_timestamp())
     return timestamp_added_df
 
@@ -62,7 +62,7 @@ customer_schema = StructType([
 )
 def customers_bronze():
     df = spark.readStream.format("csv").schema(customer_schema).option("header", "true")\
-                .load(f"{path_prefix}/customers/")
+                .load(f"{path_prefix}/customer/")
     timestamp_added_df = df.withColumn( "__insert_date", current_timestamp())
     return timestamp_added_df
 
@@ -83,4 +83,56 @@ def order_items_bronze():
                 .load(f"{path_prefix}/order_items/")
     timestamp_added_df = df.withColumn( "__insert_date", current_timestamp())
     return timestamp_added_df
+
+
+
+@dp.table(
+    table_properties={"quality": "silver"},
+    comment="joined_table"
+)
+def joined_silver():
+    joined_df = spark.sql("""
+                            select 
+                                A.*,
+                                B.order_id, 
+                                B.qty,
+                                (B.qty * A.unit_price) as total_order_value,
+                                C.customer_id,
+                                C.order_date,
+                                D.name as customer_name
+                            from kaninipro_catalog.demo.products_bronze A  
+                            join kaninipro_catalog.demo.order_items_bronze B 
+                            on A.product_id = B.product_id 
+                            join kaninipro_catalog.demo.orders_bronze C 
+                            on C.order_id = B.order_id 
+                            join kaninipro_catalog.demo.customers_bronze D 
+                            on C.customer_id = D.customer_id
+                            """)
+    
+    
+    timestamp_added_df = joined_df.withColumn( "__insert_date", current_timestamp())
+    return timestamp_added_df
+
+
+
+@dp.table(
+    table_properties={"quality": "gold"},
+    comment="orders_agg"
+)
+def orders_agg():
+
+    order_value_agg = spark.sql("""
+    select 
+    customer_name,
+    TO_CHAR(order_date, 'yyyy-MM') as year_month,
+    sum(total_order_value) as total_order_value_sum
+    from kaninipro_catalog.demo.joined_silver
+    group by year_month, customer_name
+    """)
+
+    timestamp_added_df = order_value_agg.withColumn( "__insert_date", current_timestamp())
+
+    return timestamp_added_df
+
+
 
