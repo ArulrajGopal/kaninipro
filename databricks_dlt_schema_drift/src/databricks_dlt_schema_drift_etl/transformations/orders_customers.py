@@ -4,44 +4,38 @@ from pyspark.sql.window import Window
 from pyspark.sql.types import *
 
 
-# source tables
-@dp.table(
-    comment="customer bronze table"
-)
+# source lookup table
+@dp.table(comment="customer bronze table")
 def customers_bronze():
-    df = spark.table("kaninipro_catalog.etl.customer_raw")
+    return spark.read.table("kaninipro_catalog.etl.customer_raw").withColumn( "__insert_date", current_timestamp())
+            
 
-    timestamp_added_df = df.withColumn( "__insert_date", current_timestamp())
-    return timestamp_added_df
-
-
-# source tables
-@dp.table(
-    comment="orders bronze table"
-)
+# source driver table
+@dp.table(comment="orders bronze table")
 def orders_bronze():
-    df = spark.readStream.table("kaninipro_catalog.etl.orders_raw")
+    return spark.readStream.table("kaninipro_catalog.etl.orders_raw").withColumn( "__insert_date", current_timestamp())
+                
 
-    timestamp_added_df = df.withColumn( "__insert_date", current_timestamp())
-    return timestamp_added_df
-
-
-
-@dp.table(
-    comment="aggegregated orders and customers data"
-)
-def agg_table():
-    joined_df = spark.sql("""
-                        select 
+# final joined table
+@dp.table(comment="joined orders and customers data")
+def joined_table():
+    return spark.sql("""select 
                             o_custkey as cust_key, 
                             date_format(o_orderdate, 'yyyy-MM') as year_month,
-                            A.o_orderpriority as order_priority, 
-                            A.o_totalprice as total_price
+                            case 
+                                when o_orderpriority = '1-URGENT' then 1
+                                when o_orderpriority = '2-HIGH' then 2
+                                when o_orderpriority = '3-MEDIUM' then 3
+                                when o_orderpriority = '4-NOT SPECIFIED' then 4
+                                when o_orderpriority = '5-LOW' then 5
+                                end as orderpriority,
+                            o_orderstatus as order_status,
+                            c_mktsegment as market_segment,
+                            o_totalprice as total_price
                         from Live.orders_bronze A  
                         join Live.customers_bronze B 
-                        on A.o_custkey = B.c_custkey
-                            """)
+                        on o_custkey = c_custkey
+                            """)\
+                 .withColumn( "__insert_date", current_timestamp())
     
-    
-    timestamp_added_df = joined_df.withColumn( "__insert_date", current_timestamp())
-    return timestamp_added_df
+
