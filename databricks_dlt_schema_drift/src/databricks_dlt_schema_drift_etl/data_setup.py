@@ -25,8 +25,9 @@ SELECT * FROM samples.tpch.customer
 
 # COMMAND ----------
 
-orders = spark.sql("select * from samples.tpch.orders where o_orderdate <= '1995-12-31'")
-orders.write.saveAsTable("kaninipro_catalog.etl.orders_raw")
+
+orders = spark.sql("select * from samples.tpch.orders where o_orderdate <= '1996-04-30'")
+orders.write.mode("append").saveAsTable("kaninipro_catalog.etl.orders_raw")
 
 # COMMAND ----------
 
