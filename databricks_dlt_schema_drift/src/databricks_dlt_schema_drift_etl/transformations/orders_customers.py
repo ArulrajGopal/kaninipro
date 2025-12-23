@@ -33,13 +33,13 @@ def orders_bronze():
 def agg_table():
     joined_df = spark.sql("""
                         select 
-                          o_custkey, 
-                          date_format(o_orderdate, 'yyyy-MM') as year_month, 
-                          sum(o_totalprice) as total_price
-                        from LIVE.orders_bronze A  
-                        join LIVE.customers_bronze B 
+                            o_custkey as cust_key, 
+                            date_format(o_orderdate, 'yyyy-MM') as year_month,
+                            A.o_orderpriority as order_priority, 
+                            A.o_totalprice as total_price
+                        from Live.orders_bronze A  
+                        join Live.customers_bronze B 
                         on A.o_custkey = B.c_custkey
-                        group by o_custkey, date_format(o_orderdate, 'yyyy-MM')
                             """)
     
     
