@@ -1,0 +1,14 @@
+# The main pipeline for databricks_sdp_incr
+
+resources:
+  pipelines:
+    databricks_sdp_incr_etl:
+      name: databricks_sdp_incr_etl
+      catalog: ${var.catalog}
+      schema: ${var.schema}
+      serverless: true
+      root_path: "../src/databricks_sdp_incr_etl"
+
+      libraries:
+        - glob:
+            include: ../src/databricks_sdp_incr_etl/transformations/**
