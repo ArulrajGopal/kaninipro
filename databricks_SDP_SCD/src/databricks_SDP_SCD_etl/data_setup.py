@@ -14,12 +14,17 @@ from pyspark.sql.functions import col,current_timestamp,lit
 
 # COMMAND ----------
 
+dbutils.fs.rm("/Volumes/kaninipro_catalog/dev/landing_zone/customers",True)
+
+# COMMAND ----------
+
 df = spark.table("samples.tpch.customer")\
         .filter(col("c_custkey")<=100000)\
         .withColumn("__insert_time",current_timestamp())\
         .coalesce(1)
 
-df.write.mode("overwrite").format("parquet").save("/Volumes/kaninipro_catalog/dev/landing_zone/customers")
+df.write.mode("overwrite").format("parquet")\
+                .save("/Volumes/kaninipro_catalog/dev/landing_zone/customers")
 
 # COMMAND ----------
 
@@ -32,17 +37,21 @@ from pyspark.sql.types import DecimalType
 
 df = spark.table("samples.tpch.customer")
 
-batch1_df = df.filter(col("c_custkey")<=4)\
+df_1 = df.filter(col("c_custkey")<=4)\
                     .withColumn("c_acctbal",lit(0.00).cast(DecimalType(18,2)))\
-                    .withColumn("__insert_time",lit("2025-12-27T06:25:32.710+00:00"))
+                    .withColumn("__insert_time",lit("2025-12-27T07:50:00.000+00:00"))
 
-batch2_df = df.withColumn("c_acctbal",lit(15.00).cast(DecimalType(18,2)))\
+df_2 = df.withColumn("c_acctbal",lit(15.00).cast(DecimalType(18,2)))\
                     .filter(col("c_custkey")<=2)\
                     .withColumn("__insert_time",current_timestamp())
 
-incr_df = batch1_df.unionByName(batch2_df).coalesce(1)
+incr_df = df_1.unionByName(df_2).coalesce(1)
 
 incr_df.write.mode("append").format("parquet").save("/Volumes/kaninipro_catalog/dev/landing_zone/customers")
+
+# COMMAND ----------
+
+display(incr_df)
 
 # COMMAND ----------
 
@@ -61,7 +70,15 @@ incr_df.write.mode("append").format("parquet").save("/Volumes/kaninipro_catalog/
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC select * from kaninipro_catalog.dev.customers_deduped where c_custkey <= 4
 
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select * from kaninipro_catalog.dev.customers_history  
+# MAGIC where c_custkey <= 4
+# MAGIC order by c_custkey, __START_AT 
 
 # COMMAND ----------
 
