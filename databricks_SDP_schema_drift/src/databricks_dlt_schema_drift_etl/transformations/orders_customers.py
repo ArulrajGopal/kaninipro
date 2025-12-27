@@ -48,9 +48,8 @@ def raw_orders():
   )
 
 
-
-@dp.table(comment="customer bronze table")
-def joined_table():
+@dp.table(comment="final dataset with orders and customer info")
+def final_dataset():
     df_o = spark.readStream.table("LIVE.raw_orders")
     df_c = spark.read.table("LIVE.customer_deduped")
     
@@ -70,15 +69,3 @@ def joined_table():
                               )\
                   .withColumn( "__created_time", current_timestamp())        
     return joined_df
-
-
-
-dp.create_streaming_table(name="final_dataset", comment="fully joined table")
-
-dp.create_auto_cdc_flow(
-  target="final_dataset",  
-  source="joined_table",  
-  keys=["cust_key","order_key"], 
-  sequence_by=col("__created_time"),
-  stored_as_scd_type="2"
-)
