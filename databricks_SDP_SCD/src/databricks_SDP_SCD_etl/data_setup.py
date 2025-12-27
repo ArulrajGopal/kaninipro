@@ -1,6 +1,7 @@
 # Databricks notebook source
 from pyspark.sql.functions import col,current_timestamp,lit
 spark.sql("CREATE SCHEMA IF NOT EXISTS kaninipro_catalog.dev")
+spark.sql("CREATE VOLUME IF NOT EXISTS kaninipro_catalog.dev.landing_zone")
 
 # COMMAND ----------
 
