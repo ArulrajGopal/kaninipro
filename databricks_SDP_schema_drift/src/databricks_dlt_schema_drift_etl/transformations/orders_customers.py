@@ -27,7 +27,7 @@ dp.create_streaming_table(name="customer_deduped", comment="customer deduped tab
 dp.create_auto_cdc_flow(
   target="customer_deduped",  
   source="raw_customers",  
-  keys=["cust_key"], 
+  keys=["c_custkey"], 
   sequence_by=col("__created_time")
 )
 
