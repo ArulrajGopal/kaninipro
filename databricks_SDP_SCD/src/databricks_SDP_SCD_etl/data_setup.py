@@ -17,7 +17,7 @@ from pyspark.sql.functions import col,current_timestamp,lit
 df = spark.table("samples.tpch.customer")\
         .filter(col("c_custkey")<=100000)\
         .withColumn("__insert_time",current_timestamp())\
-        .coalesce(10)
+        .coalesce(1)
 
 df.write.mode("overwrite").format("parquet").save("/Volumes/kaninipro_catalog/dev/landing_zone/customers")
 
