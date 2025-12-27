@@ -1,22 +1,23 @@
 # Databricks notebook source
+from pyspark.sql.functions import col
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC #catalog, schema and table setup
 
 # COMMAND ----------
 
 spark.sql("CREATE CATALOG if not exists kaninipro_catalog")
+spark.sql("CREATE database if not exists kaninipro_catalog.dev")
 
 # COMMAND ----------
 
-spark.sql("CREATE database if not exists kaninipro_catalog.etl")
-
-# COMMAND ----------
-
-spark.sql("""
-CREATE TABLE kaninipro_catalog.etl.customer_raw
-AS
-SELECT * FROM samples.tpch.customer
-""")
+# customer data
+spark.table("samples.tpch.customer")\
+    .write.mode("append")\
+    .format("parquet")\
+    .save("/Volumes/kaninipro_catalog/dev/landing_zone/customers")
 
 # COMMAND ----------
 
@@ -25,67 +26,107 @@ SELECT * FROM samples.tpch.customer
 
 # COMMAND ----------
 
-
-orders = spark.sql("select * from samples.tpch.orders where o_orderdate <= '1996-04-30'")
-orders.write.mode("append").saveAsTable("kaninipro_catalog.etl.orders_raw")
+# orders data batch1
+spark.table("samples.tpch.orders")\
+    .filter(col("o_orderdate").between("1992-01-01","1992-12-31"))\
+    .write.mode("append")\
+    .format("parquet")\
+    .save("/Volumes/kaninipro_catalog/dev/landing_zone/orders")
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC select * from kaninipro_catalog.dev.joined_table;
+# orders data batch2
+spark.table("samples.tpch.orders")\
+    .filter(col("o_orderdate").between("1993-01-01","1993-03-31"))\
+    .write.mode("append")\
+    .format("parquet")\
+    .save("/Volumes/kaninipro_catalog/dev/landing_zone/orders")
+
+# COMMAND ----------
+
+# orders data batch3
+spark.table("samples.tpch.orders")\
+    .filter(col("o_orderdate").between("1993-04-01","1993-06-30"))\
+    .write.mode("append")\
+    .format("parquet")\
+    .save("/Volumes/kaninipro_catalog/dev/landing_zone/orders")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #sample code
+# MAGIC #Explore
 
 # COMMAND ----------
 
-from pyspark.sql.functions import current_timestamp
+# MAGIC %sql
+# MAGIC select * from kaninipro_catalog.dev.final_dataset
 
-df_joined = spark.sql("""
-    select 
-        o_custkey as cust_key, 
-        date_format(o_orderdate, 'yyyy-MM') as year_month,
-        o_orderstatus as order_status,
-        c_mktsegment as market_segment,
-        o_totalprice as total_price
-    from kaninipro_catalog.dev.orders_bronze A  
-    join kaninipro_catalog.dev.customers_bronze B 
-    on o_custkey = c_custkey
-""").withColumn("__insert_date", current_timestamp())
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC #Queries to fix data manually
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC ALTER TABLE kaninipro_catalog.dev.final_dataset
+# MAGIC ALTER COLUMN order_priority TYPE INT;
+# MAGIC
+# MAGIC ALTER TABLE kaninipro_catalog.dev.final_dataset
+# MAGIC ADD COLUMNS (market_segment STRING);
+# MAGIC   
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC SELECT
+# MAGIC     c.c_custkey        AS cust_key,
+# MAGIC     o.o_orderdate      AS order_date,
+# MAGIC     o.o_orderkey       AS order_key,
+# MAGIC     o.o_orderstatus    AS order_status,
+# MAGIC     o.o_totalprice     AS total_price,
+# MAGIC     CASE
+# MAGIC         WHEN o.o_orderpriority = '1-URGENT'        THEN 1
+# MAGIC         WHEN o.o_orderpriority = '2-HIGH'          THEN 2
+# MAGIC         WHEN o.o_orderpriority = '3-MEDIUM'        THEN 3
+# MAGIC         WHEN o.o_orderpriority = '4-NOT SPECIFIED' THEN 4
+# MAGIC         WHEN o.o_orderpriority = '5-LOW'           THEN 5
+# MAGIC     END                  AS order_priority,
+# MAGIC     c.c_mktsegment      AS market_segment,
+# MAGIC     current_timestamp() AS __created_time
+# MAGIC FROM LIVE.raw_orders o
+# MAGIC JOIN LIVE.customer_deduped c
+# MAGIC   ON o.o_custkey = c.c_custkey;
+# MAGIC
 
 # COMMAND ----------
 
 spark.sql("""
-ALTER TABLE kaninipro_catalog.dev.joined_table
-ADD COLUMNS (
-    order_status STRING,
-    market_segment STRING
-)
-""")
-
-# COMMAND ----------
-
-# Backfill historical data for joined_table after schema change using SQL UPDATE (only order_status & market_segment)
-spark.sql("""
-MERGE INTO kaninipro_catalog.dev.joined_table AS target
+MERGE INTO kaninipro_catalog.dev.target_table AS t
 USING (
-    SELECT
-        o.o_custkey AS cust_key,
-        o.o_orderdate,
-        o.o_orderstatus AS order_status,
-        c.c_mktsegment AS market_segment
-    FROM kaninipro_catalog.dev.orders_bronze o
-    JOIN kaninipro_catalog.dev.customers_bronze c
-      ON o.o_custkey = c.c_custkey
-) AS source
-ON target.cust_key = source.cust_key 
-AND target.year_month = date_format(source.o_orderdate, 'yyyy-MM')
-WHEN MATCHED THEN UPDATE SET
-    target.order_status = source.order_status,
-    target.market_segment = source.market_segment
+  SELECT
+    c.c_custkey        AS cust_key,
+    o.o_orderdate      AS order_date,
+    o.o_orderkey       AS order_key,
+    o.o_orderstatus    AS order_status,
+    o.o_totalprice     AS total_price,
+    CASE
+        WHEN o.o_orderpriority = '1-URGENT' THEN 1
+        WHEN o.o_orderpriority = '2-HIGH' THEN 2
+        WHEN o.o_orderpriority = '3-MEDIUM' THEN 3
+        WHEN o.o_orderpriority = '4-NOT SPECIFIED' THEN 4
+        WHEN o.o_orderpriority = '5-LOW' THEN 5
+        ELSE NULL
+    END AS order_priority,
+    c.c_mktsegment      AS market_segment,
+    current_timestamp() AS __created_time
+  FROM LIVE.raw_orders o
+  JOIN LIVE.customer_deduped c
+    ON o.o_custkey = c.c_custkey
+) AS s
+ON t.cust_key = s.cust_key AND t.order_key = s.order_key
+WHEN MATCHED THEN
+  UPDATE SET
+    t.order_priority = s.order_priority,
+    t.market_segment = s.market_segment
 """)
-
-
-
