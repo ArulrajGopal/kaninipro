@@ -24,7 +24,7 @@ targets:
     mode: development
     default: true
     workspace:
-      host: https://adb-7405618710404461.1.azuredatabricks.net
+      host: https://adb-7405610474580392.12.azuredatabricks.net
     variables:
       catalog: kaninipro_catalog
       schema: dev
