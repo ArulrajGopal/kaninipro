@@ -7,11 +7,8 @@ database = "dev"
 catalog_database = f"{catalog}.{database}"
 path = "/Volumes/kaninipro_catalog/dev/landing_zone/customers/"
 
-
-# Create the target bronze table
 dp.create_streaming_table("raw_customers", comment="New customer data incrementally ingested from cloud object storage landing zone")
 
-# Create an Append Flow to ingest the raw data into the bronze table
 @dp.append_flow(
   target = "raw_customers"
 )
