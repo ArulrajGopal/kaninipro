@@ -1,0 +1,42 @@
+# This is a Databricks asset bundle definition for databricks_SDP_SCD.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: databricks_SDP_SCD
+  uuid: 027ba5bf-1b3b-41c8-87de-5411bfd512b8
+
+include:
+  - resources/*.yml
+  - resources/*/*.yml
+
+# Variable declarations. These variables are assigned in the dev/prod targets below.
+variables:
+  catalog:
+    description: The catalog to use
+  schema:
+    description: The schema to use
+
+targets:
+  dev:
+    # The default target uses 'mode: development' to create a development copy.
+    # - Deployed resources get prefixed with '[dev my_user_name]'
+    # - Any job schedules and triggers are paused by default.
+    # See also https://docs.databricks.com/dev-tools/bundles/deployment-modes.html.
+    mode: development
+    default: true
+    workspace:
+      host: https://adb-7405610474580392.12.azuredatabricks.net
+    variables:
+      catalog: kaninipro_catalog
+      schema: dev
+  prod:
+    mode: production
+    workspace:
+      host: https://adb-7405610474580392.12.azuredatabricks.net
+      # We explicitly deploy to /Workspace/Users/arulrajgopal_outlook.com#ext#@arulrajgopaloutlook.onmicrosoft.com to make sure we only have a single copy.
+      root_path: /Workspace/Users/arulrajgopal_outlook.com#ext#@arulrajgopaloutlook.onmicrosoft.com/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      catalog: kaninipro_catalog
+      schema: prod
+    permissions:
+      - user_name: arulrajgopal_outlook.com#ext#@arulrajgopaloutlook.onmicrosoft.com
+        level: CAN_MANAGE
