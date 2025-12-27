@@ -33,3 +33,16 @@ dp.create_auto_cdc_flow(
   keys=["c_custkey"], 
   sequence_by=col("__insert_time")
 )
+
+
+dp.create_streaming_table(
+    name="customers_history", comment="Slowly Changing Dimension Type 2 for customers"
+)
+
+dp.create_auto_cdc_flow(
+    target="customers_history",
+    source="raw_customers",
+    keys=["c_custkey"],
+    sequence_by=col("__insert_time"),
+    stored_as_scd_type="2",
+)  
