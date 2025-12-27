@@ -7,7 +7,7 @@ database = "dev"
 catalog_database = f"{catalog}.{database}"
 path = "/Volumes/kaninipro_catalog/dev/landing_zone/customers/"
 
-dp.create_streaming_table("raw_customers", comment="New customer data incrementally ingested from cloud object storage landing zone")
+dp.create_streaming_table("raw_customers", comment="Incremental load")
 
 @dp.append_flow(
   target = "raw_customers"
