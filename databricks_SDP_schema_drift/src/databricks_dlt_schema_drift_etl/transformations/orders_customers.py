@@ -59,13 +59,7 @@ def final_dataset():
                               "o_orderkey as order_key",
                               "o_orderstatus as order_status",
                               "o_totalprice as total_price",
-                              "case when o_orderpriority = '1-URGENT' then 1 " \
-                              "when o_orderpriority = '2-HIGH' then 2 " \
-                              "when o_orderpriority = '3-MEDIUM' then 3 " \
-                              "when o_orderpriority = '4-NOT SPECIFIED' then 4 " \
-                              "when o_orderpriority = '5-LOW' then 5 " \
-                              "end as order_priority",
-							                "c_mktsegment as market_segment"
+                              "o_orderpriority as order_priority"
                               )\
                   .withColumn( "__created_time", current_timestamp())        
     return joined_df
