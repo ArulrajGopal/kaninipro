@@ -1,0 +1,14 @@
+# The main pipeline for databricks_SDP_data_quality
+
+resources:
+  pipelines:
+    sdp_dataquality_sample_warn_drop:
+      name: sdp_dataquality_sample_warn_drop
+      catalog: ${var.catalog}
+      schema: ${var.schema}
+      serverless: true
+      root_path: "../src/sdp_dataquality_sample_warn_drop"
+
+      libraries:
+        - glob:
+            include: ../src/sdp_dataquality_sample_warn_drop/**

@@ -1,0 +1,14 @@
+# The main pipeline for databricks_SDP_data_quality
+
+resources:
+  pipelines:
+    sdp_dataquality_sample_fail:
+      name: sdp_dataquality_sample_fail
+      catalog: ${var.catalog}
+      schema: ${var.schema}
+      serverless: true
+      root_path: "../src/sdp_dataquality_sample_fail"
+
+      libraries:
+        - glob:
+            include: ../src/sdp_dataquality_sample_fail/**
