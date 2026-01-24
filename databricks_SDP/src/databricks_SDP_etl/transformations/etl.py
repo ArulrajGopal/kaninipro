@@ -75,7 +75,7 @@ dp.create_sink(
 )
 def joined_data_sink():
     orders = spark.readStream.table("LIVE.orders_bronze")
-    products = spark.readStream.table("LIVE.product_deduped")
+    products = spark.readStream.option("skipChangeCommits", "true").table("LIVE.product_deduped")
     
     joined_df = orders.alias("A").join(products.alias("B"),["product_id"])\
                         .selectExpr("A.order_id","A.customer_id","A.order_date","A.product_id","A.qty","B.product_name","B.category","B.unit_price")\
