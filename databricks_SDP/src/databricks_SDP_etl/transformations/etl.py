@@ -53,32 +53,28 @@ def products_bronze():
     return timestamp_added_df
 
 
-dp.create_streaming_table(name="product_deduped", comment="Deduped")
-
-dp.create_auto_cdc_flow(
-  target="product_deduped",  
-  source="products_bronze",  
-  keys=["product_id"], 
-  sequence_by=col("__insert_date")
-)
-
-
-
 dp.create_sink(
     name="parquet_sink",
     format="parquet",
-    options={"path": f"{target_path_prefix}/joined_data/"}
+    options={"path": f"{target_path_prefix}/final_data/"}
 )
 
 @dp.append_flow(
     target="parquet_sink"
 )
-def joined_data_sink():
+def final_data_sink():
     orders = spark.readStream.table("LIVE.orders_bronze")
-    products = spark.readStream.option("skipChangeCommits", "true").table("LIVE.product_deduped")
+    products = spark.readStream.table("LIVE.product_deduped")
     
     joined_df = orders.alias("A").join(products.alias("B"),["product_id"])\
-                        .selectExpr("A.order_id","A.customer_id","A.order_date","A.product_id","A.qty","B.product_name","B.category","B.unit_price")\
+                        .selectExpr("A.order_id",
+                                    "A.customer_id",
+                                    "A.order_date",
+                                    "A.product_id",
+                                    "A.qty",
+                                    "B.product_name",
+                                    "B.category",
+                                    "B.unit_price")\
                         .withColumn( "__processed_time", current_timestamp())
     return joined_df
 
