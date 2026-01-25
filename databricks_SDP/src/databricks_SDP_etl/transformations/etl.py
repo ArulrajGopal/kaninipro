@@ -64,7 +64,7 @@ dp.create_sink(
 )
 def final_data_sink():
     orders = spark.readStream.table("LIVE.orders_bronze")
-    products = spark.readStream.table("LIVE.product_deduped")
+    products = spark.readStream.table("LIVE.products_bronze")
     
     joined_df = orders.alias("A").join(products.alias("B"),["product_id"])\
                         .selectExpr("A.order_id",
@@ -85,7 +85,7 @@ def final_data_sink():
 )
 def agg_data():
     orders = spark.table("LIVE.orders_bronze")
-    products = spark.table("LIVE.product_deduped")
+    products = spark.table("LIVE.products_bronze")
     
     joined_df = orders.alias("A").join(
                     products.alias("B"),
