@@ -1,0 +1,14 @@
+# The main pipeline for dbx_ldp_data_qual_quar
+
+resources:
+  pipelines:
+    dbx_ldp_data_qual_quar_etl:
+      name: dbx_ldp_data_qual_quar_etl
+      catalog: ${var.catalog}
+      schema: ${var.schema}
+      serverless: true
+      root_path: "../src/dbx_ldp_data_qual_quar_etl"
+
+      libraries:
+        - glob:
+            include: ../src/dbx_ldp_data_qual_quar_etl/transformations/**
