@@ -13,9 +13,11 @@ spark = (
 account_key = ''
 spark.conf.set("fs.azure.account.key.kaniniproraw.dfs.core.windows.net",account_key)
 
-for i in range(6000):
+# 10,000,001
+
+for i in range(250):
     loaded_dt = datetime.now().strftime("%Y%m%d%H%M%S")
-    vehcile_id_df = spark.range(1, 10000001).withColumnRenamed("id", "vehicle_id")
+    vehcile_id_df = spark.range(1, 250000001).withColumnRenamed("id", "vehicle_id")
 
     final_df = vehcile_id_df\
                         .withColumn("unit_id",(rand() * 50000).cast("int") + 1)\
@@ -27,11 +29,14 @@ for i in range(6000):
                         .withColumn("sensor_f",(rand() * 1000).cast("int") + 1)\
                         .withColumn("sensor_g",(rand() * 1000).cast("int") + 1)\
                         .withColumn("sensor_h",(rand() * 1000).cast("int") + 1)\
-                        .withColumn("loaded_dt", lit(loaded_dt))
+                        .withColumn("loaded_dt", lit(loaded_dt))\
+                        .coalesce(10)
 
 
     final_df.write.mode("append").partitionBy("loaded_dt").format("delta")\
                         .save("abfss://data@kaniniproraw.dfs.core.windows.net/test_data/sensor_data")
+
+    print(f"$$$$$$$$ Successfully {i} partitions completed $$$$$$$$")
         
 
      
