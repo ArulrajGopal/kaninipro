@@ -31,4 +31,11 @@ spark-submit \
     --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension \
     --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog \
     --conf spark.eventLog.dir="file://$EVENT_LOG_DIR" \
+    --num-executors 8 \
+    --executor-cores 8 \
+    --executor-memory 24g \
+    --conf spark.executor.memoryOverhead=8g \
+    --driver-memory 32g \
+    --conf spark.sql.shuffle.partitions=64 \
+    --conf spark.default.parallelism=64 \
     "$PYSPARK_SCRIPT"
