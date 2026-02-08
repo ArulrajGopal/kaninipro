@@ -26,10 +26,8 @@ con.execute(f"""
 """)
 
 query = """
-    SELECT *
+    SELECT count(*)
    FROM parquet_scan('abfss://data@kaniniproraw.dfs.core.windows.net/sensor_data_output/sens_parquet.parquet')
-   order by unit_id 
-   limit 100
 """
 
 df = con.execute(query).df()
