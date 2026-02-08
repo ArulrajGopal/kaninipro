@@ -1,0 +1,12 @@
+install uv
+irm https://astral.sh/uv/install.ps1 | iex
+
+uv –version
+
+
+cd <directory>
+
+uv init <directory>
+
+uv python pin 3.12
+uv add duckdb numpy pandas

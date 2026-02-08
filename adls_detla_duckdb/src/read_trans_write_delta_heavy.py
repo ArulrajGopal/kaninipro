@@ -30,24 +30,6 @@ con.execute(f"""
 start_time = datetime.now()
 print("started at ", start_time)
 
-# con.execute("""
-#     COPY (
-#         SELECT 
-#         unit_id,
-#         sum(sensor_a) as sum_sen_a,
-#         sum(sensor_b) as sum_sen_b,
-#         sum(sensor_c) as sum_sen_c,
-#         sum(sensor_d) as sum_sen_d,
-#         sum(sensor_e) as sum_sen_e,
-#         sum(sensor_f) as sum_sen_f,
-#         sum(sensor_g) as sum_sen_g,
-#         sum(sensor_h) as sum_sen_h
-#         FROM parquet_scan('abfss://data@kaniniproraw.dfs.core.windows.net/test_data/sensor_data/loaded_dt=20260207201903/*.parquet')
-#         group by unit_id
-#     )
-#     TO 'abfss://data@kaniniproraw.dfs.core.windows.net/sensor_data_output/sens_parquet.parquet'
-#     (FORMAT parquet)
-# """)
 
 con.execute("""
     COPY (
