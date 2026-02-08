@@ -26,8 +26,10 @@ con.execute(f"""
 """)
 
 query = """
-    select count(*) from (    SELECT distinct loaded_dt
-    FROM delta_scan('abfss://data@kaniniproraw.dfs.core.windows.net/test_data/sensor_data/'))
+    SELECT *
+    FROM delta_scan('abfss://data@kaniniproraw.dfs.core.windows.net/people_delta/')
+    where first_name <> 'first_name'
+    LIMIT 10
 """
 
 df = con.execute(query).df()

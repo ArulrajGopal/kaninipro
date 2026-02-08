@@ -2,8 +2,6 @@ import duckdb
 import os 
 
 con = duckdb.connect()
-con.execute("INSTALL delta;")
-con.execute("LOAD delta;")
 
 con.execute("INSTALL azure;")
 con.execute("LOAD azure;")
@@ -25,18 +23,18 @@ con.execute(f"""
 );
 """)
 
+query = """
+    SELECT *
+    FROM 'abfss://data@kaniniproraw.dfs.core.windows.net/people_csv/people.csv'
+    where first_name <> 'first_name'
+    LIMIT 10
+"""
 
-con.execute("""
-    COPY (
-        SELECT *
-        FROM delta_scan(
-            'abfss://data@kaninipro.dfs.core.windows.net/target/people_delta/'
-        )
-        WHERE first_name <> 'first_name'
-          AND id IN (3, 4)
-    )
-    TO 'abfss://data@kaninipro.dfs.core.windows.net/target/people_delta_filtered/people.parquet'
-    (FORMAT parquet)
-""")
+df = con.execute(query).df()
+print(df)
 
-print("successfully written into parquet !!!")
+
+
+
+
+
