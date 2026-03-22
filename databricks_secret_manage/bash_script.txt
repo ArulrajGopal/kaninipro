@@ -1,1 +1,13 @@
+#databricks auth login 
+
+databricks auth login --host <workspace_url>
+
+databricks auth profiles
+
+
+#databricks secret scope creation
+
+databricks secrets create-scope <scope-name>
+
+databricks secrets put-secret <scope-name> <secret-key-name> --string-value=<secret-value>
 
