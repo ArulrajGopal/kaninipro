@@ -1,6 +1,4 @@
-# Databricks CLI Authentication and Secret Management
-
-This guide explains how to authenticate to Databricks using the CLI and create/manage secrets using **Databricks Secret Scopes**.
+# Steps to Databricks CLI auth and create/manage secrets using **Databricks Secret Scopes**.
 
 ---
 
