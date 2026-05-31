@@ -29,10 +29,10 @@ write about:
 
 This repo is designed to:
 
-1.  Keep track of code examples used in blog posts\
-2.  Maintain clean and organized project structures\
-3.  Allow readers to clone and reproduce experiments\
-4.  Track improvements and refinements over time\
+1.  Keep track of code examples used in blog posts
+2.  Maintain clean and organized project structures
+3.  Allow readers to clone and reproduce experiments
+4.  Track improvements and refinements over time
 5.  Serve as a long-term technical knowledge archive
 
 ------------------------------------------------------------------------
