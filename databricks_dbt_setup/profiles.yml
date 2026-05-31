@@ -3,9 +3,11 @@ dbt_project:
   outputs:
     dev:
       type: databricks
-      host: adb-7405612977923315.15.azuredatabricks.net   
-      http_path: /sql/protocolv1/o/7405612977923315/0527-083742-vrbnhuor
+      host: adb-7405606213568957.17.azuredatabricks.net  
+      http_path: /sql/protocolv1/o/7405612977923315/0531-115702-e59y4wpn
       token: "{{ env_var('DBT_TOKEN') }}"   
-      catalog: hive_metastore                                 
+      catalog: kaninipro                                 
       schema: dev                             
-      threads: 1
+      threads: 4
+
+

@@ -3,10 +3,7 @@ with base as (
 )
 
 select
-    age_group,
-    count(id)       as total_people,
-    avg(age)        as avg_age,
-    min(age)        as min_age,
-    max(age)        as max_age
+    dept,
+    count(id)       as employee_count
 from base
-group by age_group
+group by dept
