@@ -1,10 +1,6 @@
-# zero_to_one_dbt
+# dbt databricks initial setup
 
 A step-by-step guide to setting up dbt with Databricks from scratch.
-
----
-
-## Initial Setup
 
 ### 1. Create and enter a new project folder
 
