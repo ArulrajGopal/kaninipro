@@ -1,4 +1,4 @@
 select
     *
-from kaninipro.dev.sample_table
-where salary > 80000
+from kaninipro.dev.employees
+where salary > 100000
