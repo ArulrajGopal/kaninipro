@@ -1,0 +1,11 @@
+dbt_project:                   
+  target: dev
+  outputs:
+    dev:
+      type: databricks
+      host: adb-7405612977923315.15.azuredatabricks.net   
+      http_path: /sql/protocolv1/o/7405612977923315/0527-083742-vrbnhuor
+      token: "{{ env_var('DBT_TOKEN') }}"   
+      catalog: hive_metastore                                 
+      schema: dev                             
+      threads: 1
