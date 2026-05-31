@@ -1,1 +1,1 @@
-{"_invocation_id": "dc5d85bd-0d01-4462-aaf1-45f1f8fd478b", "linked": {"0": {"name": "model.dbt_project.mart_sample", "type": "model"}, "1": {"name": "model.dbt_project.stg_sample", "type": "model", "succ": [0]}}}
+{"_invocation_id": "8eb449a2-ee93-4133-86f0-383b31432561", "linked": {"0": {"name": "model.dbt_project.employee_object", "type": "model"}, "1": {"name": "model.dbt_project.stg_employees", "type": "model", "succ": [0]}, "2": {"name": "model.dbt_project.stg_salary", "type": "model", "succ": [0]}}}
