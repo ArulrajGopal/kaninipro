@@ -87,21 +87,6 @@ youtube_comment_df.write.mode("overwrite").format("delta").saveAsTable("youtube_
 
 
 
-# COMMAND ----------
-
-
-
-# COMMAND ----------
-
-
-
-# COMMAND ----------
-
-
-
-# COMMAND ----------
-
-
 
 # COMMAND ----------
 
