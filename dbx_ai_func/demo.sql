@@ -51,23 +51,3 @@ from youtube_cleansed_tbl
 
 -- COMMAND ----------
 
-
-
--- COMMAND ----------
-
-
-
--- COMMAND ----------
-
-
-
--- COMMAND ----------
-
-
-
--- COMMAND ----------
-
-
-
--- COMMAND ----------
-
