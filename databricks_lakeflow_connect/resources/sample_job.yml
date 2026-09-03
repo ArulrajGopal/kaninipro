@@ -1,0 +1,18 @@
+resources:
+  jobs:
+    sample_job:
+      name: sample_job
+
+      tasks:
+        - task_key: run_ingestion_pipeline
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.lakeflow_connect_test.id}
+
+        - task_key: aggregate_employee_data
+          depends_on:
+            - task_key: run_ingestion_pipeline
+          notebook_task:
+            notebook_path: ../src/task1.py
+            base_parameters:
+              catalog: kaninipro
+              schema: dev

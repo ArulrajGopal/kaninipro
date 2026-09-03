@@ -1,0 +1,29 @@
+# This is a Databricks asset bundle definition for my_project.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: my_project
+  uuid: 77b63f7e-a8cb-4411-ac10-313b58ea4b15
+
+include:
+  - resources/*.yml
+  - resources/*/*.yml
+
+# Variable declarations. These variables are assigned in the dev/prod targets below.
+variables:
+  env:
+    description: The environment (dev, test, prod)
+  catalog:
+    description: The catalog to use
+  schema:
+    description: The schema to use
+
+targets:
+  dev:
+    mode: development
+    variables:
+      env: dev
+      catalog: dev_catalog
+      schema: dev_schema
+    default: true
+    workspace:
+      host: https://adb-7405611766865865.5.azuredatabricks.net

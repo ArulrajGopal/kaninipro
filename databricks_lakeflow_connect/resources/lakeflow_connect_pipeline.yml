@@ -1,0 +1,34 @@
+# Managed ingestion (Lakeflow Connect) pipeline that syncs the Employees
+# table from the SQL Server connection into Unity Catalog.
+resources:
+  pipelines:
+    lakeflow_connect_test:
+      id: 0d61eb8b-a22f-4cb2-8498-0ba0df82c699
+      name: lakeflow_connect_test
+      ingestion_definition:
+        connection_name: kaninipro_server_connection
+        connector_type: QUERY_BASED
+        objects:
+          - table:
+              source_catalog: kaninipro-database-dev
+              source_schema: dbo
+              source_table: Employees
+              destination_catalog: kaninipro
+              destination_schema: dev
+              table_configuration:
+                primary_keys:
+                  - EmployeeID
+                query_based_connector_config:
+                  cursor_columns:
+                    - LastModifiedTime
+      schema: dev
+      channel: PREVIEW
+      catalog: kaninipro
+      notifications:
+        - email_recipients:
+            - xyz@gmail.com
+          alerts:
+            - on-update-fatal-failure
+      serverless: true
+
+
