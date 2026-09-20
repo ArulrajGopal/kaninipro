@@ -1,0 +1,22 @@
+resources:
+  jobs:
+    orders_etl_job:
+      name: orders-etl-${bundle.target}
+      tags:
+        project: orders_etl
+
+      # No job_clusters block: tasks below omit job_cluster_key, so each runs
+      # on serverless compute (no cluster to size or manage).
+      tasks:
+        - task_key: run_orders_etl
+          notebook_task:
+            notebook_path: ../src/orders_etl_notebook.py
+            base_parameters:
+              orders_input_path: "${var.orders_input_path}"
+              orders_bronze_path: "${var.orders_bronze_path}"
+              orders_checkpoint_path: "${var.orders_checkpoint_path}"
+              customers_input_path: "${var.customers_input_path}"
+              customers_bronze_path: "${var.customers_bronze_path}"
+              customers_checkpoint_path: "${var.customers_checkpoint_path}"
+              output_path: "${var.output_path}"
+              format: "delta"

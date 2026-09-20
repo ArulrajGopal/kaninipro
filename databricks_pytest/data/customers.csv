@@ -1,0 +1,4 @@
+customer_id,customer_name,region
+c1,Acme Corp,EAST
+c2,Globex Inc,WEST
+c3,Initech,CENTRAL

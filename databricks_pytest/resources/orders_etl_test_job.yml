@@ -1,0 +1,13 @@
+resources:
+  jobs:
+    orders_etl_test_job:
+      name: orders-etl-tests-${bundle.target}
+      tags:
+        project: orders_etl
+
+      # No job_clusters block: the task below omits job_cluster_key, so it
+      # runs on serverless compute (no cluster to size or manage).
+      tasks:
+        - task_key: run_tests
+          notebook_task:
+            notebook_path: ../src/run_tests_notebook.py

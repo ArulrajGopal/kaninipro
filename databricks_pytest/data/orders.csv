@@ -1,0 +1,6 @@
+order_id,customer_id,product,quantity,unit_price,order_date
+o1,c1,widget,5,20.0,2024-01-01T10:00:00
+o2,c1,gadget,2,150.0,2024-01-03T10:00:00
+o3,c2,widget,1,20.0,2024-01-02T10:00:00
+o4,c2,gizmo,10,60.0,2024-01-05T10:00:00
+o5,c3,gadget,1,999.0,2024-01-06T10:00:00

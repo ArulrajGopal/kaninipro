@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "orders_etl"
+version = "0.1.0"
+description = "Orders ETL pipeline (PySpark) - runs locally and as a Databricks job"
+requires-python = ">=3.10"
+dependencies = [
+    "pyspark==3.5.1",
+    "delta-spark==3.1.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["src", "src.*"]

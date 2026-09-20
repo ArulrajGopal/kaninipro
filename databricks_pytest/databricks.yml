@@ -1,0 +1,41 @@
+# Databricks Asset Bundle config. See DATABRICKS.md for deploy/run instructions.
+bundle:
+  name: orders_etl
+
+include:
+  - resources/*.yml
+
+variables:
+  catalog:
+    description: Unity Catalog catalog holding the input/output Volumes
+    default: kaninipro_catalog
+  schema:
+    description: Unity Catalog schema (database) holding the input/output Volumes
+    default: orders_etl_dev
+  orders_input_path:
+    description: ADLS landing folder (Volume) that Auto Loader watches for new raw order CSV files
+    default: /Volumes/${var.catalog}/${var.schema}/raw/orders
+  orders_bronze_path:
+    description: Bronze Delta table Auto Loader ingests orders_input_path into
+    default: /Volumes/${var.catalog}/${var.schema}/bronze/orders
+  orders_checkpoint_path:
+    description: Auto Loader checkpoint location for the orders ingestion stream
+    default: /Volumes/${var.catalog}/${var.schema}/_checkpoints/orders
+  customers_input_path:
+    description: ADLS landing folder (Volume) that Auto Loader watches for new/changed customer CSV files
+    default: /Volumes/${var.catalog}/${var.schema}/raw/customers
+  customers_bronze_path:
+    description: Bronze Delta table Auto Loader merges/upserts customers_input_path into (keyed on customer_id)
+    default: /Volumes/${var.catalog}/${var.schema}/bronze/customers
+  customers_checkpoint_path:
+    description: Auto Loader checkpoint location for the customers ingestion stream
+    default: /Volumes/${var.catalog}/${var.schema}/_checkpoints/customers
+  output_path:
+    default: /Volumes/${var.catalog}/${var.schema}/output
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://adb-7405617645744064.4.azuredatabricks.net
